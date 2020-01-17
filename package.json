@@ -1,0 +1,91 @@
+{
+  "name": "gulp-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "gulp": "^4.0.2",
+    "gulp-cheerio": "^1.0.0",
+    "gulp-iconfont": "^10.0.3",
+    "gulp-iconfont-css": "^3.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-svg-symbols": "^3.2.3",
+    "gulp-svgmin": "^2.2.0",
+    "node-sass": "^4.13.0",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10",
+    "webpack-stream": "^5.2.1"
+  },
+  "pathes": {
+    "srcAll": "./src/**/*",
+    "all": "/**/*",
+    "dest": "dev",
+    "utils": "./src/utils",
+    "iconsAll": "./src/icons/**/*"
+  },
+  "fontConfig": {
+    "name": "iconfont",
+    "icons": {
+      "fontName": "iconfont",
+      "prependUnicode": true,
+      "formats": [
+        "ttf",
+        "eot",
+        "woff",
+        "woff2",
+        "svg"
+      ]
+    },
+    "svgMin": {
+      "js2svg": {
+        "pretty": true
+      },
+      "plugins": [
+        {
+          "convertPathData": {
+            "noSpaceAfterFlags": false
+          }
+        }
+      ]
+    },
+    "svgSymbols": {
+      "slug": "svg-symbols",
+      "svgAttrs": {
+        "class": "svg-symbols",
+        "hidden": true
+      },
+      "id": "icon-%f",
+      "class": ".icon_%f",
+      "title": false,
+      "templates": [
+        "default-svg",
+        "default-scss"
+      ]
+    },
+    "styles": {
+      "fontName": "iconfont",
+      "path": "./src/utils/_iconfont-template.scss",
+      "targetPath": "../../../src/utils/_iconfont.scss",
+      "fontPath": "fonts/iconfont/"
+    },
+    "removeAttibutes": [
+      "fill",
+      "stroke",
+      "height",
+      "width",
+      "style",
+      "fill-rule"
+    ]
+  }
+}
