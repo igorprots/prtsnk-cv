@@ -1,0 +1,37 @@
+/* c. About Section
+/* ------------------------------------------------------------------ */
+
+#about {
+    background: #2B2B2B;
+    padding-top: 96px;
+    padding-bottom: 66px;
+    overflow: hidden;
+    a {
+        color: #fff;
+        &:visited {
+            color: #fff;
+        }
+        &:hover,
+        &:focus {
+            color: #11ABB0;
+        }
+    }
+    h2 {
+        font: 22px/30px 'opensans-bold', sans-serif;
+        color: #fff;
+        margin-bottom: 12px;
+    }
+    p {
+        line-height: 30px;
+        color: #7A7A7A;
+    }
+    .profile-pic {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 100%;
+    }
+    .contact-details {
+        width: 41.66667%;
+    }
+}

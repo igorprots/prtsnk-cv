@@ -1,0 +1,74 @@
+section#contact
+  .row.section-head
+    .two.columns.header-col
+      h1
+        span Get In Touch.
+    .ten.columns
+      p.lead
+        | Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
+        | quia voluptas sit aspernatur aut odit aut fugit.
+  .row
+    .eight.columns
+      // form
+      form#contactForm(name='contactForm', action='', method='post')
+        fieldset
+          div
+            label(for='contactName')
+              | Name 
+              span.required *
+            input#contactName(name='contactName', type='text', value='', size='35')
+          div
+            label(for='contactEmail')
+              | Email 
+              span.required *
+            input#contactEmail(name='contactEmail', type='text', value='', size='35')
+          div
+            label(for='contactSubject') Subject
+            input#contactSubject(name='contactSubject', type='text', value='', size='35')
+          div
+            label(for='contactMessage')
+              | Message 
+              span.required *
+            textarea#contactMessage(name='contactMessage', cols='50', rows='15')
+          div
+            button.submit Submit
+            span#image-loader
+              img(src='images/loader.gif', alt='')
+      // Form End
+      // contact-warning
+      #message-warning  Error boy
+      // contact-success
+      #message-success
+        i.fa.fa-check
+        | Your message was sent, thank you!
+        br
+    aside.four.columns.footer-widgets
+      .widget.widget_contact
+        h4 Address and Phone
+        p.address
+          | Jonathan Doe
+          br
+          |  1600 Amphitheatre Parkway 
+          br
+          |  Mountain View, CA 94043 US
+          br
+          span (123) 456-7890
+      .widget.widget_tweets
+        h4.widget-title Latest Tweets
+        ul#twitter
+          li
+            span
+              | This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
+              | Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum
+              a(href='#') http://t.co/CGIrdxIlI3
+            b
+              a(href='#') 2 Days Ago
+          li
+            span
+              | Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+              | laudantium, totam rem aperiam,
+              | eaque ipsa quae ab illo inventore veritatis et quasi
+              a(href='#') http://t.co/CGIrdxIlI3
+            b
+              a(href='#') 3 Days Ago
+// Contact Section End
