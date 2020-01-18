@@ -1,3 +1,14 @@
+body {
+    background: #0f0f0f;
+}
+
+
+/* ------------------------------------------------------------------ */
+
+
+/* b. Header Styles
+/* ------------------------------------------------------------------ */
+
 header {
     position: relative;
     height: 800px;
@@ -8,9 +19,6 @@ header {
     -webkit-background-size: cover !important;
     text-align: center;
     overflow: hidden;
-}
-
-header {
     &:before {
         content: '';
         display: inline-block;
@@ -52,12 +60,6 @@ header {
             border-color: rgba(150, 150, 150, 0.1);
         }
     }
-}
-
-
-/* header social links */
-
-header {
     .social {
         margin: 24px 0;
         padding: 0;
@@ -97,6 +99,12 @@ header {
         }
     }
 }
+
+
+/* vertically center banner section */
+
+
+/* header social links */
 
 
 /* scrolldown link */
@@ -172,3 +180,9 @@ ul#nav {
         }
     }
 }
+
+
+/* Links */
+
+
+/* ------------------------------------------------------------------ */

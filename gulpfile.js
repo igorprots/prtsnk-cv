@@ -1,106 +1,80 @@
-const gulp = require('gulp')
-const sass = require('gulp-sass')
-const webpack = require('webpack-stream')
-const webpackConfig = require('./webpack.config.js')
-const iconfont = require('gulp-iconfont')
-const iconfontCss = require('gulp-iconfont-css')
-const runTimestamp = Math.round(Date.now()/1000)
-const cheerio = require('gulp-cheerio')
-const replace = require('gulp-replace')
-const svgmin = require('gulp-svgmin')
-const svgSymbols = require('gulp-svg-symbols')
-const rename = require('gulp-rename')
-const {series, parallel} = require('gulp')
-const {pathes, fontConfig} = require('./package.json')
-const svgToFontsNoSymbols = true
+const {
+    pathes
+} = require('./package.json'),
+    gulp = require('gulp'), {
+        series,
+        parallel
+    } = require('gulp'),
+    pug = require('gulp-pug')
+sass = require('gulp-sass')
+plumber = require('gulp-plumber'),
+    rename = require("gulp-rename"),
+    svgSymbols = require('gulp-svg-symbols'),
+    svgmin = require('gulp-svgmin')
 
-sass.compiler = require('node-sass')
-
-function htmlHandler(cb) {
-    return gulp
-        .src(`${pathes.srcAll}.html`)
-        .pipe(gulp.dest(pathes.dest))
-
-    cb();
-}
-
-function scssCompiler(cb) {
-    return gulp
-        .src(`${pathes.srcAll}.scss`)
-        .pipe(
-            sass().on('error', sass.logError)
-        )
-        .pipe(gulp.dest(pathes.dest))
-    cb();
-}
-
-function jsCompiler(cb) {
-    return gulp
-        .src(`${pathes.srcAll}.js`)
-        .pipe(webpack(webpackConfig))
-        .pipe(gulp.dest(`${pathes.dest}`))
+function compilePug(cb) {
+    return gulp.src(`${pathes.src}/${pathes.pug}`)
+        .pipe(pug({
+            pretty: '    '
+        }))
+        .pipe(gulp.dest(pathes.dev))
 
     cb()
 }
 
-function iconsHandler(cb) {
-    fontConfig.icons.timestamp = runTimestamp
+function compileScss(cb) {
+    gulp.src(`${pathes.src}/${pathes.scss}`)
+        .pipe(plumber())
+        .pipe(sass({
+            outputStyle: 'compressed'
+        }))
+        .pipe(gulp.dest(pathes.dev))
 
-    if (svgToFontsNoSymbols) {
-        return gulp
-            .src(`${pathes.iconsAll}.svg`)
-            .pipe(cheerio({
-                run: $ => {
-                    fontConfig.removeAttibutes.forEach(
-                        attribute => $(`[${attribute}]`).removeAttr(`${attribute}`)
-                    );
-                },
-                parserOptions: {xmlMode: true}
-            }))
-            .pipe(svgmin(fontConfig.svgMin))
-            .pipe(replace('&gt;', '>'))
-            .pipe(iconfontCss(fontConfig.styles))
-            .pipe(iconfont(fontConfig.icons))
-            .on('glyphs', (glyphs, options) => console.log(glyphs, options))
-            .pipe(gulp.dest(`dev/${fontConfig.styles.fontPath}`))
-    } else {
-        return gulp
-            .src(`${pathes.iconsAll}.svg`)
-            .pipe(cheerio({
-                run: $ => {
-                    fontConfig.removeAttibutes.forEach(
-                        attribute => $(`[${attribute}]`).removeAttr(`${attribute}`)
-                    );
-                },
-                parserOptions: {xmlMode: true}
-            }))
-            .pipe(svgmin(fontConfig.svgMin))
-            .pipe(replace('&gt;', '>'))
-            .pipe(svgSymbols(fontConfig.svgSymbols))
-            .pipe(rename({
-                prefix: '_'
-            }))
-            .pipe(gulp.dest(pathes.utils))
+    cb()
+}
+
+function minifyImages(cb) {
+    gulp.src(`${pathes.assets}/${pathes.images}/${pathes.all}`)
+        .pipe(plumber())
+        .pipe(gulp.dest(`${pathes.dev}/${pathes.images}`))
+
+    cb()
+}
+
+function makeSvgSprite(cb) {
+    let configSvgSymbols = {
+        svgAttrs: {
+            class: `icon-sprite`,
+            hidden: true
+        },
+        templates: [`default-svg`]
     }
 
+    gulp.src(`${pathes.svg}/${pathes.sprite}`)
+        .pipe(plumber())
+        .pipe(svgmin())
+        .pipe(svgSymbols(configSvgSymbols))
+        .pipe(rename({
+            basename: "sprite",
+            extname: ".pug"
+        }))
+        .pipe(gulp.dest(`${pathes.src}`))
+
     cb()
 }
 
-function watch(cb) {
-    gulp.watch(`${pathes.srcAll}.html`, htmlHandler)
-    gulp.watch(`${pathes.srcAll}.scss`, scssCompiler)
-    gulp.watch(`${pathes.iconsAll}.svg`, iconsHandler)
-    gulp.watch(`${pathes.srcAll}.js`, jsCompiler)
+function watchFiles(cb) {
+    gulp.watch(pathes.pug, compilePug)
+    gulp.watch(pathes.scss, compileScss)
+    gulp.watch(`${pathes.svg}/${pathes.sprite}`, makeSvgSprite)
 
-    cb();
+    cb()
 }
 
-exports.default = series(
-    iconsHandler,
-    parallel(
-        htmlHandler,
-        scssCompiler,
-        jsCompiler
-    ),
-    watch
-)
+const build = parallel(compilePug, compileScss, minifyImages, makeSvgSprite, watchFiles)
+
+exports.compilePug = compilePug
+exports.compileScss = compileScss
+exports.minifyImages = minifyImages
+exports.makeSvgSprite = makeSvgSprite
+exports.default = build
