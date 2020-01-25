@@ -1,2 +1,8 @@
 node_modules
 __MACOSX
+images
+inc
+js
+assets
+.vscode
+README.md
